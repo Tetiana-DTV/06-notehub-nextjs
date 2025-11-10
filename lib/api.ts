@@ -11,38 +11,26 @@ const options = {
   },
 };
 
-
 interface FetchNotesProps {
   notes: Note[];
   totalPages: number;
 }
 
-
-export interface NewNote {
+interface NewNote {
   title: string;
   content: string;
   tag: "Todo" | "Work" | "Personal" | "Meeting" | "Shopping";
 }
 
-
 export async function fetchNotes(
   query: string,
-  page: number,
-  tag?: string
+  page: number
 ): Promise<FetchNotesProps> {
   const perPage = 12;
-
-
-  const res = await axios.get<FetchNotesProps>("notes", {
-    ...options,
-    params: {
-      search: query,
-      page,
-      perPage,
-      tag,
-    },
-  });
-
+  const res = await axios.get<FetchNotesProps>(
+    `notes?search=${query}&page=${page}&perPage=${perPage}`,
+    options
+  );
   return res.data;
 }
 
